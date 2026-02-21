@@ -10,7 +10,7 @@
 | # | Package | Type | Status | Notes |
 |---|---------|------|--------|-------|
 | 1 | `youtubei.js` | Pure JS (InnerTube API) | ⚠️ Partial | Gets video info but download blocked by YouTube (non-2xx) |
-| 2 | **`ytdlp-nodejs`** | **yt-dlp wrapper** | **✅ Working** | **Downloaded 84MB MP4 at 5.33 MB/s. Auto-manages binary.** |
+| 2 | **`ytdlp-nodejs`** | **yt-dlp wrapper** | **✅ Working** | **Downloaded 7MB Short using chrome cookies.** |
 | 3 | `yt-dlp-exec` | yt-dlp wrapper | ⏳ Skipped | Not needed — #2 works |
 | 4 | `yt-dlp-wrap` | yt-dlp wrapper | ⏳ Skipped | Not needed — #2 works |
 | 5 | `@distube/ytdl-core` | Pure JS (ytdl fork) | ❌ Dead | Archived Aug 2025, no longer maintained |

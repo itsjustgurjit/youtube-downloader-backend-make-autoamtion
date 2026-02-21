@@ -7,6 +7,9 @@ import fs from 'fs';
 // Change this URL to download a different video
 const VIDEO_URL = 'https://www.youtube.com/shorts/Tbz35Mc8pzE';
 const OUTPUT_DIR = './downloads';
+// If you get "Sign in to confirm you're not a bot", set your browser name here
+// Options: 'chrome', 'firefox', 'safari', 'edge', 'brave', 'vivaldi', 'opera'
+const COOKIES_FROM_BROWSER = 'chrome';
 // ================================
 
 const ytdlp = new YtDlp();
@@ -30,10 +33,15 @@ async function downloadVideo(url, outputDir = OUTPUT_DIR) {
     // Get info first
     await getVideoInfo(url);
 
-    console.log('\n⬇️  Starting download...\n');
+    let downloadBuilder = ytdlp.download(url);
 
-    const result = await ytdlp
-        .download(url)
+    // Apply cookies if configured to bypass bot detection
+    if (COOKIES_FROM_BROWSER) {
+        console.log(`🍪 Using cookies from ${COOKIES_FROM_BROWSER}...`);
+        downloadBuilder = downloadBuilder.cookiesFromBrowser(COOKIES_FROM_BROWSER);
+    }
+
+    const result = await downloadBuilder
         .filter('audioandvideo')
         .quality('highest')
         .type('mp4')

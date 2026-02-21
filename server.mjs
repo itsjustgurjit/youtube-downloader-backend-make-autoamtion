@@ -51,12 +51,12 @@ app.get('/api/info', async (req, res) => {
 });
 
 // ──────────────────────────────────────────────
-// GET /api/download?url=<youtube_url>
+// GET /api/download?url=<youtube_url>&quality=720p&browser=chrome
 // Downloads the video on the server and returns
 // a direct download link to the file
 // ──────────────────────────────────────────────
 app.get('/api/download', async (req, res) => {
-    const { url, quality } = req.query;
+    const { url, quality, browser } = req.query;
     if (!url) return res.status(400).json({ error: 'Missing "url" query parameter' });
 
     try {
@@ -71,10 +71,17 @@ app.get('/api/download', async (req, res) => {
         const downloadDir = path.join(DOWNLOADS_DIR, downloadId);
         fs.mkdirSync(downloadDir, { recursive: true });
 
-        // Download the video
+        // Build the download
         console.log('⬇️  Downloading...');
-        const result = await ytdlp
-            .download(url)
+        let downloadBuilder = ytdlp.download(url);
+
+        // Apply cookies if browser is specified to bypass bot detection
+        if (browser) {
+            console.log(`🍪 Using cookies from ${browser}...`);
+            downloadBuilder = downloadBuilder.cookiesFromBrowser(browser);
+        }
+
+        const result = await downloadBuilder
             .filter('audioandvideo')
             .quality(quality || 'highest')
             .type('mp4')
